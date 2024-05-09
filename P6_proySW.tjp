@@ -28,6 +28,9 @@ project pSix "Web Game"  2024-03-15 +3m {
   scenario plan "Plan" {
     scenario actual "Actual"
   }
+  scenario planIntial "PlanInital" {
+    scenario intial "Initial"
+  }
 }
 
 # This is not a real copyright for this file. It's just used as an example.
@@ -314,12 +317,32 @@ textreport frame "" {
     title "Resource Graph"
     center '<[report id="resourceGraph"]>'
   }
+  textreport "InitialPlan" {
+    formats html
+    title "InitialPlan"
+    center '<[report id="overview"]>'
+  }
 
 
 }
 
 # A traditional Gantt chart with a project overview.
 taskreport overview "" {
+  scenarios actual
+  headline "Current Project Plan"
+  columns bsi { title 'WBS' },
+          name, start, end, effort, cost,
+          revenue, chart { ${TaskTip} }
+  # For this report we like to have the abbreviated weekday in front
+  # of the date. %a is the tag for this.
+  timeformat "%a %Y-%m-%d"
+  loadunit days
+  hideresource @all
+  balance cost rev
+  caption 'All effort values are in man days.'
+}
+
+taskreport overviewInitalPlan "" {
   scenarios actual
   headline "Current Project Plan"
   columns bsi { title 'WBS' },
