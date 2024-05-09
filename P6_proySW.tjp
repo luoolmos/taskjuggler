@@ -70,14 +70,14 @@ resource dev3 "Peter Green" {
   email "kkk@unizar.es"
 }
 
-shift t4h "monday - friday 4h" {
+shift avaibality4h "monday - friday 4h" {
   workinghours mon - fri 9:00-13:00
 }
 
 resource Luo "Lucía Olmos" {
   email "838569@unizar.es"
   rate 138
-  shifts t4h
+  shifts avaibality4h
 }
 
 # Now we specify the work packages. The whole project is described as
@@ -314,6 +314,12 @@ textreport frame "" {
     title "Resource Graph"
     center '<[report id="resourceGraph"]>'
   }
+
+  textreport initialPlan "Initial Project Plan" {
+  formats html
+  center '<[report id="initialPlan"]>'
+}
+
 }
 
 # A traditional Gantt chart with a project overview.
