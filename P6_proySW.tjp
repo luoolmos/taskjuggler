@@ -183,12 +183,12 @@ task WMGame "Web & Mobile Game" {
   task tAndroid "Mobile Front End" {
     purge chargeset
     chargeset mFront
-    responsible dev4
+    responsible Luo
     depends WMGame.tback.tBEd
 
     task tMobileDisenno "Front End General Design" {
       effort 2d
-      allocate dev4
+      allocate Luo
     }
     task tAndroidImplementacion "Mobile Front End Construction" {
       effort 9d
