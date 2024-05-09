@@ -5,8 +5,7 @@
  * some elements of it
  */
 
-
-project pSix "Web Game"  2024-03-15 +2.5m {
+project pSix "Web Game"  2023-03-15 +12m {
   # Set the default time zone for the project. If not specified, UTC
   # is used.
   timezone "Europe/Paris"
@@ -20,7 +19,7 @@ project pSix "Web Game"  2024-03-15 +2.5m {
   # the project reports. If not specified, the current day will be
   # used, but this will likely be outside of the project range, so it
   # can't be seen in the reports.
-  now 2024-05-09-13:00
+  now 2023-05-05-12:00
   # The currency for all money values is the US Dollar.
   currency "EUR"
 
@@ -31,7 +30,7 @@ project pSix "Web Game"  2024-03-15 +2.5m {
 }
 
 # This is not a real copyright for this file. It's just used as an example.
-copyright "Creative Commons 2024 Proyecto Software - Unizar."
+copyright "Creative Commons 2023 Proyecto Software - Unizar."
 
 # The daily default rate of all resources. This can be overridden for each
 # resource. We specify this, so that we can do a good calculation of
@@ -55,7 +54,7 @@ balance cost rev
 
 resource boss "Liz Bullock" {
   email "iiii@unizar.es"
-  actual:leaves project 2024-05-07 - 2024-05-12
+  actual:leaves project 2023-05-07 - 2023-05-12
   rate 160
 }
 resource dev1 "Paul Smith" {
@@ -64,19 +63,20 @@ resource dev1 "Paul Smith" {
 resource dev2 "Samantha Müller" {
   email "jjj@unizar.es"
   rate 100
-  actual:leaves project 2024-05-07 - 2024-05-12
+  actual:leaves project 2023-05-07 - 2023-05-12
 }
 resource dev3 "Peter Green" {
   email "kkk@unizar.es"
 }
 
 shift t4h "monday - friday 4h" {
-  workinghours mon - fri 9:00-13:00
+  # 4h per day
+  workinghours mon - fri 10:00-14:00
 }
 
-resource Luo "Lucía Olmos" {
-  email "838569@unizar.es"
-  rate 138
+resource Hector "Hector Toral" {
+  email "799301@unizar.es"
+  rate 14
   shifts t4h
 }
 
@@ -102,6 +102,47 @@ task WMGame "Web & Mobile Game" {
       depends WMGame.deliveries.start
   }
 
+  task tbackcloud "Despliegue Back end cloud" {
+    # It is necessary to “purge” the “chargeset” because it has been assigned previously to other variable 
+    purge chargeset
+    chargeset back
+    responsible Hector
+    depends WMGame.tback
+    task tResearch "Research and Comparison of Alternatives" {
+      effort 5d
+      allocate Hector
+    }
+    task tupcloud "Cloud Deployment" {
+      effort 2d
+      actual:effort 1d
+      allocate dev1
+      depends WMGame.tbackcloud.tResearch
+    }
+    journalentry 2023-04-28"Cloud selection" {
+        author dev1
+        alert green
+        summary "AWS and Azure have been selected as the leading candidates."
+      }
+  }
+
+  task tAndroid "Front Ent Mobile" {
+    # It is necessary to “purge” the “chargeset” because it has been assigned previously to other variable 
+    purge chargeset
+    chargeset mFront
+    responsible dev1
+    depends WMGame.tgdesign
+    task tMobileDisenno "Front End General Design" {
+      effort 2d
+      allocate dev3
+    }
+    task tAndroidImplementacion "Mobile Front End Construction" {
+      effort 7d
+      actual:effort 1d
+      allocate dev1
+      depends WMGame.tAndroid.tMobileDisenno
+    }
+  }
+
   task tback "Back End" {
     # It is necessary to “purge” the “chargeset” because it has been assigned previously to other variable 
     purge chargeset
@@ -118,7 +159,7 @@ task WMGame "Web & Mobile Game" {
       actual:effort 11d
       allocate dev1, dev2
       depends WMGame.tback.tBEd
-      journalentry 2024-03-28 "Game logic completed before deadline" {
+      journalentry 2023-03-28 "Game logic completed before deadline" {
         author boss
         alert green
         summary "The team has ended the game logic before deadline."
@@ -131,28 +172,6 @@ task WMGame "Web & Mobile Game" {
     }
   }
 
-    task tbackcloud "Despliegue Back end cloud" {
-    purge chargeset
-    chargeset back
-    responsible Luo
-    depends WMGame.tback
-    task tResearch "Research and Comparison of Alternatives" {
-      effort 5d
-      allocate Luo
-    }
-    task tupcloud "Cloud Deployment" {
-      effort 2d
-      actual:effort 1d
-      allocate dev1
-      depends WMGame.tbackcloud.tResearch
-    }
-    journalentry 2024-04-28"Cloud selection" {
-        author dev1
-        alert green
-        summary "AWS have been selected as the leading candidates."
-      }
-  }
-
   task twebF "Web Front End" {
     purge chargeset
     chargeset wFront
@@ -162,7 +181,7 @@ task WMGame "Web & Mobile Game" {
       effort 9d
       actual:effort 15d
       allocate dev3
-      journalentry 2024-04-11 "Problems with the GUI design tool" {
+      journalentry 2023-04-11 "Problems with the GUI design tool" {
         author dev3
         alert yellow
         summary "The tool used for the GUI design has given me a lot of problems. I recommend to look for other one."
@@ -180,36 +199,13 @@ task WMGame "Web & Mobile Game" {
     }    
   }
 
-  task tAndroid "Mobile Front End" {
-    purge chargeset
-    chargeset mFront
-    responsible dev4
-    depends WMGame.tback.tBEd
-
-    task tMobileDisenno "Front End General Design" {
-      effort 2d
-      allocate dev4
-    }
-    task tAndroidImplementacion "Mobile Front End Construction" {
-      effort 9d
-      allocate dev1
-      depends WMGame.tAndroid.tMobileDisenno
-    }
-    journalentry 2024-04-11 "Problems with the GUI design tool" {
-      author dev3
-      alert yellow
-      summary "The tool used for the GUI design has given me a lot of problems. I recommend to look for other one."
-    }
-
-  }
-
   task ttest "Accpetance tests" {
-      start 2024-06-01
+      start 2023-06-01
       effort 10d
       allocate boss
       allocate dev2
       actual:effort 15d
-      journalentry 2024-04-13 "Problems with the planned dates" {
+      journalentry 2023-04-13 "Problems with the planned dates" {
         author boss
         alert red
         summary "The whole team asiigned to this task has a trip to visit a new client from May 7th to May 12th. Needed to check if the project can be finished on time or it is necessary to reasign efforts."
@@ -286,6 +282,11 @@ textreport frame "" {
     center '<[report id="overview"]>'
   }
 
+  textreport infoi "informe plan" {
+    formats html
+    center '<[report id="informe"]>'
+  }
+
   textreport "Status" {
     formats html
     center -8<-
@@ -332,6 +333,20 @@ taskreport overview "" {
   caption 'All effort values are in man days.'
 }
 
+taskreport informe "" {
+  scenarios plan
+  headline "Informe"
+  columns bsi { title 'WBS' },
+          name, start, end, effort, cost,
+          revenue, chart { ${TaskTip} }
+  # For this report we like to have the abbreviated weekday in front
+  # of the date. %a is the tag for this.
+  timeformat "%a %Y-%m-%d"
+  loadunit days
+  hideresource @all
+  balance cost rev
+  caption 'All effort values are in man days.'
+}
 
 # Macro to set the background color of a cell according to the alert
 # level of the task.
