@@ -315,10 +315,6 @@ textreport frame "" {
     center '<[report id="resourceGraph"]>'
   }
 
-  textreport initialPlan "Initial Project Plan" {
-  formats html
-  center '<[report id="initialPlan"]>'
-}
 
 }
 
